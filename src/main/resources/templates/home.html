@@ -1,0 +1,100 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Home Feed</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Welcome to Your Feed</h2>-->
+
+<!--&lt;!&ndash; Create Post &ndash;&gt;-->
+<!--<form th:action="@{/post}" th:object="${post}" method="post">-->
+<!--    <textarea th:field="*{content}" placeholder="What's on your mind?" required></textarea><br/>-->
+<!--    <button type="submit">Post</button>-->
+<!--</form>-->
+
+<!--&lt;!&ndash; Posts Feed &ndash;&gt;-->
+<!--<div th:each="p : ${posts}">-->
+<!--    <hr/>-->
+<!--    <p><strong th:text="${p.author}"></strong> - <span th:text="${p.timestamp}"></span></p>-->
+<!--    <p th:text="${p.content}"></p>-->
+<!--    <p>Likes: <span th:text="${p.likeCount}"></span></p>-->
+<!--    <form th:action="@{/like/${p.id}}" method="post">-->
+<!--        <button type="submit" th:text="${p.likedByUser} ? 'Unlike' : 'Like'"></button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<p><a th:href="@{/directory}">User Directory</a> | <a th:href="@{/login}">Logout</a></p>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inklet - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script th:src="@{/script.js}" defer></script>
+
+
+</head>
+<body class="bg-cover bg-center bg-no-repeat min-h-screen"   style="background-image: url('/img/bg1.jpg');">
+
+<nav class="bg-white shadow p-4 flex justify-between items-center">
+
+    <h3 class="text-4xl md:text-2xl font-bold text-black-400 text-center tracking-wide mb-2">Inklet - Poetry Lives Here!</h3>
+
+    <form th:action="@{/logout}" method="post">
+        <button class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+    </form>
+</nav>
+
+<section class="max-w-xl mx-auto mt-6">
+    <!-- Create Post -->
+    <form th:action="@{/post}" method="post" th:object="${post}" class="bg-white p-4 rounded shadow mb-4">
+        <div class="mb-4">
+        <textarea
+                id="postContent"
+                th:field="*{content}"
+                class="w-full h-48 p-4 border border-gray-300 rounded-lg resize-y shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Write your poem or post here..."
+                maxlength="500"
+                required></textarea>
+
+            <div class="flex justify-between text-sm mt-1">
+                <span id="charCount" class="text-gray-500">0 / 500</span>
+                <span id="charError" class="text-red-600 hidden">Character limit exceeded!</span>
+            </div>
+        </div>
+
+
+        <button type="submit" class="mt-2 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Post</button>
+    </form>
+
+    <!-- Display Posts -->
+    <div th:each="p : ${posts}" class="post-card bg-white p-4 rounded shadow mb-4">
+        <div class="text-sm text-gray-600 mb-1">
+            <span th:text="${p.author}"></span> • <span th:text="${p.timestamp}"></span>
+        </div>
+        <p class="mb-2" th:text="${p.content}"></p>
+        <button
+                class="like-btn text-sm bg-gray-200 px-2 py-1 rounded hover:bg-gray-300"
+                data-post-id="[[${p.id}]]"
+                data-liked="[[${p.likedByUser}]]"
+        >
+            <span class="like-text">[[${p.likedByUser} ? 'Unlike' : 'Like']]</span>
+            (<span class="like-count">[[${p.likeCount}]]</span>)
+        </button>
+
+
+
+
+    </div>
+
+    <div class="text-center mt-8">
+        <a href="/directory" class="inline-block bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">
+            View Suggestions
+        </a>
+    </div>
+
+</section>
+</body>
+</html>
